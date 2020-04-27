@@ -1,15 +1,14 @@
 ---
 # Personal details
-name: Ραφαηλια Ασημακοπουλου
-position: Φοιτητρια
-address:
-- Πανεπιστήμιο Πατρας
-- Ελλάδα
-phone: '+30 694 038 8965'
-email: 'simple@example.com'
+name: R. Ballard
+position: Data Engineer
+#address:
+
+#phone:
+email: 'russellcballard@gmail.com'
 # Insert URLs without http://
-homepage: 'github.com/moya10'
-github: moya10
+homepage: 'r-ballard.github.io'
+github: r-ballard
 telegram: 
 
 
@@ -18,35 +17,31 @@ telegram:
 intro:
 
 skills:
-- Τεχνολογίες λογισμικού
-- Προγραμματισμός πολυμέσων
+- Consulting
+- Data Analysis
+- Python
+- R
 
 
 experience:
-- years: 2012–-
-  employer: Πανεπιστήμιο Πατρας
-  job: Φοιτητρια (2012--) 
-  city: Πατρα, Ελλάδα
-- years: 2012–-
-  employer: Πανεπιστήμιο Πατρας
-  job: Φοιτητρια (2012--) 
-  city: Πατρα, Ελλάδα
+- years: 2019–-
+  employer: Accenture Federal Services
+  job: MC Delivery Specialist
+  city: Washington, DC.
 
 
 education:
-- year: 2012
-  title: Msc Electrical and Computer Engineering
-  department: Electrical and Computer Engineering
-  institute: University of Patras
+- year: 2010
+  title: Bachelors of Science
+  department: Mathematics
+  institute: Virginia Commonwealth University
   thesis: ''
   supervisor: ''
 
 
 languages:
-- language: Ελληνικά
-  proficiency: Μητρική
-- language: Αγγλικά
-  proficiency: Μετρια
+- language: English
+  proficiency: Native Fluency
 
 # Settings
 mainfont: GFS Didot
