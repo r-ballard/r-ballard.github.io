@@ -1,0 +1,9 @@
+# Project template
+- layout: top-middle
+  name: Coursera  Practical Machine Learning Final Project April 2018
+  #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
+  github: https://github.com/r-ballard/pml-April2018
+  quote: >
+    The writeup for Coursera Data Science Specialization Course 8 - Practical Machine Learning.
+  description: | # this will include new lines to allow paragraphs
+    Sample random forest model using R.

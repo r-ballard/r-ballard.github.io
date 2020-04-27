@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>{{ page.title }}</title>
-		<!-- link to main stylesheet -->
-		<link rel="stylesheet" type="text/css" href="/css/main.css">
-	</head>
-	<body>
-		<nav>
-    		<ul>
-        		<li><a href="/">Home</a></li>
-	        	<li><a href="/about">About</a></li>
-        		<li><a href="/cv">CV</a></li>
-        		<li><a href="/blog">Blog</a></li>
-    		</ul>
-		</nav>
-		<div class="container">
-		
-		{{ content }}
-		
-		</div><!-- /.container -->
-		<footer>
-    		<ul>
-        		<li><a href="https://github.com/r-ballard">github.com/r-ballard</a></li>
-			</ul>
-		</footer>
-	</body>
+<html lang="{{ page.lang | default: site.lang | default: " en " }}">
+
+{%- include head.html -%}
+
+<body>
+
+  {%- include header.html -%}
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+
+      {%- include about.html -%}
+
+      {%- if site.data.projects.size > 0 -%}
+        {%- include projects.html -%}
+      {%- endif -%}
+
+      {%- if site.data.experience.size > 0 -%}
+        {%- include experience.html -%}
+      {%- endif -%}
+
+      {%- if site.data.education.size > 0 -%}
+        {%- include education.html -%}
+      {%- endif -%}
+
+      {%- if site.more_content -%}
+        {%- include more.html -%}
+      {%- endif -%}
+
+    </div>
+  </main>
+
+  {%- include footer.html -%}
+
+</body>
+
+</html>

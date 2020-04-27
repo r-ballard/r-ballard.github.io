@@ -1,0 +1,10 @@
+# Experience template
+- layout: left
+  company: Accenture Federal Services
+  link: https://www.accenture.com/us-en/industries/afs-index
+  job_title: MC Delivery Specialist
+  dates: January 2019 - Present
+  quote: >
+   Bold ideas, breakthrough outcomes.
+  description: | # this will include new lines to allow paragraphs
+    Act in a consultative data engineering capacity with an award winning team in a large scale data environment to deliver modern analytics to a Federal client.

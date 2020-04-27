@@ -1,0 +1,9 @@
+# Education Template
+- layout: left
+  name: Virginia Commonwealth University
+  dates: 2005-2010
+  qualification: BS Applied Mathematics (Statistics, Operations Research)
+  quote: >
+    Summary and Inferential Statistics, Probability, Simulation, Data Analytics
+  description: | # this will include new lines to allow paragraphs
+    Description of qualification
