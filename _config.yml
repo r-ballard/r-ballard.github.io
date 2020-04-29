@@ -4,7 +4,7 @@ repository: Git repository where your resume will be hosted, only required if yo
 
 # Personal info
 name: R. Ballard
-title: Data Engineerign and Analytics
+title: Data Engineering and Analytics
 email: russellcballard@gmail.com
 #phone: Your phone number (optional)
 cv   : "resume.pdf"
