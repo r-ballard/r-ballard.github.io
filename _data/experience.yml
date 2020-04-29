@@ -1,7 +1,7 @@
 # Experience template
 - layout: left
   company: Accenture Federal Services
-  link: https://www.accenture.com/us-en/industries/afs-index
+  link: <a href=https://www.accenture.com/us-en/industries/afs-index>Accenture Federal Services</a>
   job_title: MC Delivery Specialist
   dates: January 2019 - Present
   quote: >
@@ -10,7 +10,7 @@
     Act in a consultative data engineering capacity with an award winning team in a large scale data environment to deliver modern analytics to a Federal client.
 - layout: left
   company: Leidos
-  link: https://www.leidos.com
+  link: <a href=https://www.leidos.com>Leidos</a>
   job_title: Data Scientist
   dates: October 2018 - January 2019
   quote: >
