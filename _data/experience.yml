@@ -7,7 +7,7 @@
   quote: >
    Bold ideas, breakthrough outcomes.
   description: | # this will include new lines to allow paragraphs
-    Member of FedScoop 50 2018, 2019 Award winning team of data science, engineering, and visualization specialists to design, develop, implement, and augment USDA data reporting and analytics.
+    Member of FedScoop 50 2018, 2019 Award winning team of data science, engineering, and visualization specialists. Design, develop, implement, and augment USDA data reporting and analytics.
     Utilize Boto, Spark, PySpark, Python, Pandas, Numpy, SciPy, geoPandas, Fiona, GDAL, Hive, Hadoop, Impala, SQL, Sqoop, Tableau, and various other big data, informatic, GIS,
     and software engineering frameworks to optimize high throughput data analytics for critical infrastructure and monitoring regimens for SES and functional group federal clients.
     Work closely with teammates in an Agile environment utilizing Jira to research, prototype, and quickly implement best practices in virtualization, data aggregation,
