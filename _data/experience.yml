@@ -27,5 +27,36 @@
     Apply and/or develop highly advanced technologies, scientific principles, theories, and concepts to assist organizations in advancing performance and operating more efficiently
     Assist in addressing requirements and the evaluation of data assessment strategies&#58; sampling, statistical analysis, evaluation, flow processing, and management assessment strategies
     Develop cost-benefit analysis, data collection, data analysis, risk analysis, simulation model execution, economic analysis, and operational effectiveness studies.
+- layout: left
+  company: FI Consulting
+  link: https://www.ficonsulting.com
+  job_title: Consultant
+  dates: July 2016 - October 2018
+  quote: >
+   Better Information. Better Decisions. Better Control. Better Performance
+  description: | # this will include new lines to allow paragraphs
+    Member of a 6-person team responsible for the development, validation, execution, and enhancement of the cash flow modeling for all of USDA RD’s credit programs in accordance with 
+    guidelines set by The Federal Credit Reform Act of 1990 and OMB Circular A-11. RD currently operates over 40 such credit programs, each with distinct regulations and 
+    program features with sum balances outstanding totaling over $222 Billion. Responsible for conducting the cash flow analyses and subsidy rate calculations for these programs 
+    utilizing a variety of modeling tools and techniques to include&#58; R, SAS, and VBA based models with spline-based regression and stochastic macroeconomic elements. 
+    The outputs of these cash flow models were leveraged by OMB in generating The President’s Budget as well as to estimate program subsidy rate re-estimates for the purposes of Congressional appropriations. 
+    Conducts ad-hoc analyses for newly created programs, mid-year modifications to existing programs or program loans, and in response to Senior RD OCFO queries.
+
+    Researched, documentented, and provided strategic recommendations on the processes and organizational design underpinning critical Rural Development internal control and compliance functions.
+    Gathered and codified process narratives, federal regulations and RD internal guidance documents, conducted a series of interviews with RD controls staff, senior stakeholders in RD’s OCFO,
+    and senior finance and internal control management in several other Federal agencies for benchmarking purposes. Finally, Russell synthesized this information to develop a strategic plan 
+    that will be used as a roadmap for consolidating several siloed parallel processes and RD internal control functions into a modern, integrative compliance and control environment with a continuous monitoring and reporting approach.
+
+    Coordinated validation efforts for the proofing of prose, scripts, and outputs used in OFR publications. Responsible for parsing Python scripts utilizing data science libraries such as&#58; pandas, scikit-learn, numpy, etc. and
+    data warehouse APIs (Bloomberg, Haver, etc.) as well as parallelization scripts for clustered computing execution using scheduling systems such as SLURM. Duties included validating the algorithms,
+    analyses and underlying logic for OFR publication materials (analysis scripts, Excel Workbooks, etc) as well as verifying the conclusions and concepts discussed in OFR’s reports. Presented findings using markdown documents in Jupyter Notebooks.
+
+    As part of a pilot loan program designed to lend money to community development financial institutions throughout the country which would then relend the money for the construction or refurbishment of
+    community facilities such as&#58; libraries, schools, healthcare centers, etc. Designed and developed core processes for the reception, parsing, and distribution of program applicant materials
+    to community development finance underwriting SMEs subcontracted from throughout the country. Provided analytic support and facilitative expertise to ensure the senior underwriting team received
+    project resources in a timely manner, assist in conducting organizational credit risk studies on applicant CDFIs, and ensure that the compressed project timeline was adhered to.
+    Reported summary information, documentation, and regular updates on progress to key project management and key stakeholders at USDA.
+    The program’s initial run resulted in the disbursement of $149.7 Million to underwritten applicants. After the initial program run, processes were revised and automated using R scripts and repository APIs,
+    and modelling assumptions used in forecasting tools were calibrated using R to generate loss curves for Re-Lender program loans based on RD’s CF Direct Program.
 
 
