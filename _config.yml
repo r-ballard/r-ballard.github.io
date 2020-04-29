@@ -50,9 +50,31 @@ about_content: | # this will include new lines to allow paragraphs
 # More Section
 # more_title: A Little More About Me #(Use this to override about more section title)
 more_content: | # this will include new lines to allow paragraphs
-  This is where you can write a little more about yourself. You could title this section **Interests** and include some of your other interests.
+  - Scripting Languages
+    Python
+    R
+    SQL
+  
+  -Libraries
+  Pandas
+  GeoPandas
+  Numpy
+  SciKit Learn
+  Keras
+  Caret
 
-  Or you could title it **Skills** and write a bit more about things that make you more desirable, like *leadership* or *teamwork*
+  - Data Warehouse Technologies
+  Cloudera
+  Hive
+  SQL Server
+  S3
+
+  - Container/Environment
+  AWS
+  Enterprise RedHat
+  Ubuntu
+  Windows
+  Informatica
 
 # Footer
 footer_show_references: true
