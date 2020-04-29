@@ -51,30 +51,30 @@ about_content: | # this will include new lines to allow paragraphs
 # more_title: A Little More About Me #(Use this to override about more section title)
 more_content: | # this will include new lines to allow paragraphs
   - Scripting Languages
-    Python
-    R
-    SQL
+    - Python
+    - R
+    - SQL
   
-  -Libraries
-  Pandas
-  GeoPandas
-  Numpy
-  SciKit Learn
-  Keras
-  Caret
+  - Libraries
+    - Pandas
+    - GeoPandas
+    - Numpy
+    - scikit-learn
+    - Keras
+    - Caret
 
   - Data Warehouse Technologies
-  Cloudera
-  Hive
-  SQL Server
-  S3
+    - Cloudera
+    - Hive
+    - SQL Server
+    - S3
 
   - Container/Environment
-  AWS
-  Enterprise RedHat
-  Ubuntu
-  Windows
-  Informatica
+    - AWS
+    - Enterprise RedHat
+    - Ubuntu
+    - Windows
+    - Informatica
 
 # Footer
 footer_show_references: true
