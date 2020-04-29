@@ -35,7 +35,7 @@
   quote: >
    Better Information. Better Decisions. Better Control. Better Performance
   description: | # this will include new lines to allow paragraphs
-    Member of a 6-person team responsible for the development, validation, execution, and enhancement of the cash flow modeling for all of USDA RD’s credit programs in accordance with 
+    Responsible for the development, validation, execution, and enhancement of the cash flow modeling for all of USDA RD’s credit programs in accordance with 
     guidelines set by The Federal Credit Reform Act of 1990 and OMB Circular A-11. RD currently operates over 40 such credit programs, each with distinct regulations and 
     program features with sum balances outstanding totaling over $222 Billion. Responsible for conducting the cash flow analyses and subsidy rate calculations for these programs 
     utilizing a variety of modeling tools and techniques to include&#58; R, SAS, and VBA based models with spline-based regression and stochastic macroeconomic elements. 
@@ -47,7 +47,7 @@
     and senior finance and internal control management in several other Federal agencies for benchmarking purposes. Finally, Russell synthesized this information to develop a strategic plan 
     that will be used as a roadmap for consolidating several siloed parallel processes and RD internal control functions into a modern, integrative compliance and control environment with a continuous monitoring and reporting approach.
 
-    Coordinated validation efforts for the proofing of prose, scripts, and outputs used in OFR publications. Responsible for parsing Python scripts utilizing data science libraries such as&#58; pandas, scikit-learn, numpy, etc. and
+    Coordinated validation efforts for the proofing of prose, scripts, and outputs used in Treasury OFR publications. Responsible for parsing Python scripts utilizing data science libraries such as&#58; pandas, scikit-learn, numpy, etc. and
     data warehouse APIs (Bloomberg, Haver, etc.) as well as parallelization scripts for clustered computing execution using scheduling systems such as SLURM. Duties included validating the algorithms,
     analyses and underlying logic for OFR publication materials (analysis scripts, Excel Workbooks, etc) as well as verifying the conclusions and concepts discussed in OFR’s reports. Presented findings using markdown documents in Jupyter Notebooks.
 
