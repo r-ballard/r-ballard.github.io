@@ -5,5 +5,5 @@
   qualification: BS Applied Mathematics (Statistics, Operations Research)
   quote: >
     Summary and Inferential Statistics, Probability, Simulation, Data Analytics
-  description: | # this will include new lines to allow paragraphs
-    Description of qualification
+  #description: | # this will include new lines to allow paragraphs
+    #Description of qualification
