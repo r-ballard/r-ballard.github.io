@@ -30,7 +30,7 @@ about_content: | # this will include new lines to allow paragraphs
   Experienced consultant with expertise in software engineering, enterprise analytics, and large-scale data projects.
 
   Interested in cloud and distributed computing architectures, generative art and design, and advanced analytics. 
-#Write an awesome description about yourself here, this supports markdown, so you can add links and highlight things <mark>like this</mark>.
+#Write an awesome description about yourself here, this supports markdown, so you can add links and highlight things **like this**.
 
 #You can even add paragraphs by using empty lines like this and add anything else markdown supports such as
 #- [My Awesome Resume](https://moya10.github.io/awesome-cv/resume.pdf)
@@ -50,15 +50,15 @@ about_content: | # this will include new lines to allow paragraphs
 # More Section
 # more_title: A Little More About Me #(Use this to override about more section title)
 more_content: | # this will include new lines to allow paragraphs
-  <mark>Scripting Languages:</mark> Bash, Python, R, SQL
+  **Scripting Languages:** Bash, Python, R, SQL
   
-  <mark>Libraries:</mark> Pandas, GeoPandas, Numpy, scikit-learn, Keras, Caret
+  **Libraries:** Pandas, GeoPandas, Numpy, scikit-learn, Keras, Caret
 
-  <mark>Data Warehouse Technologies:</mark> Cloudera, Hive, Informatica, SQL Server, S3
+  **Data Warehouse Technologies:** Cloudera, Hive, Informatica, SQL Server, S3
 
-  <mark>Container/Environment:</mark> AWS, Enterprise RedHat, Ubuntu, Windows
+  **Container/Environment:** AWS, Enterprise RedHat, Ubuntu, Windows
 
-  <mark>Visualization and BI:</mark> Tableau, Excel VBA
+  **Visualization and BI:** Tableau, Excel VBA
 
 # Footer
 footer_show_references: true
