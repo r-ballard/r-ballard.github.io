@@ -7,7 +7,7 @@
   quote: >
    Bold ideas, breakthrough outcomes.
   description: | # this will include new lines to allow paragraphs
-    Member of FedScoop 50 2018, 2019 Award winning team of data science, engineering, and visualization specialists. Design, develop, implement, and augment USDA data reporting and analytics.
+    Member of FedScoop 50 2018, 2019, Fed 100 2020 Award winning team of data science, engineering, and visualization specialists. Design, develop, implement, and augment USDA data reporting and analytics.
     Utilize Boto, Spark, PySpark, Python, Pandas, Numpy, SciPy, geoPandas, Fiona, GDAL, Hive, Hadoop, Impala, SQL, Sqoop, Tableau, and various other big data, informatic, GIS,
     and software engineering frameworks to optimize high throughput data analytics for critical infrastructure and monitoring regimens for SES and functional group federal clients.
     Work closely with teammates in an Agile environment utilizing Jira to research, prototype, and quickly implement best practices in virtualization, data aggregation,
@@ -48,8 +48,8 @@
 
     Researched, documentented, and provided strategic recommendations on the processes and organizational design underpinning critical Rural Development internal control and compliance functions.
     Gathered and codified process narratives, federal regulations and RD internal guidance documents, conducted a series of interviews with RD controls staff, senior stakeholders in RD’s OCFO,
-    and senior finance and internal control management in several other Federal agencies for benchmarking purposes. Finally, Russell synthesized this information to develop a strategic plan 
-    that will be used as a roadmap for consolidating several siloed parallel processes and RD internal control functions into a modern, integrative compliance and control environment with a continuous monitoring and reporting approach.
+    and senior finance and internal control management in several other Federal agencies for benchmarking purposes. Synthesized this information to develop a strategic plan used as a roadmap 
+    for consolidating several siloed parallel processes and internal control functions into a modern, integrative compliance and control environment with a continuous monitoring and reporting approach.
 
     Coordinated validation efforts for the proofing of prose, scripts, and outputs used in Treasury OFR publications. Responsible for parsing Python scripts utilizing data science libraries such as&#58; pandas, scikit-learn, numpy, etc. and
     data warehouse APIs (Bloomberg, Haver, etc.) as well as parallelization scripts for clustered computing execution using scheduling systems such as SLURM. Duties included validating the algorithms,
@@ -62,5 +62,3 @@
     Reported summary information, documentation, and regular updates on progress to key project management and key stakeholders at USDA.
     The program’s initial run resulted in the disbursement of $149.7 Million to underwritten applicants. After the initial program run, processes were revised and automated using R scripts and repository APIs,
     and modelling assumptions used in forecasting tools were calibrated using R to generate loss curves for Re-Lender program loans based on RD’s CF Direct Program.
-
-
