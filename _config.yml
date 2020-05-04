@@ -67,15 +67,15 @@ more_content: | # this will include new lines to allow paragraphs
 
 certifications_content: | #multiline section
   
-  **Coursera
-  - [Data Scientist's Toolbox - August 2016](https://r-ballard.github.io/certs/rballard_coursera_dstb_0816.pdf)<br>
-  - [Exploratory Data Analysis - November 2016](https://r-ballard.github.io/certs/rballard_coursera_eda_1116.pdf)<br>
-  - [Getting and Cleaning Data - October 2016](https://r-ballard.github.io/certs/rballard_coursera_getandclean_1016.pdf)<br>
+  **Coursera**
   - [Practical Machine Learning - April 2018](https://r-ballard.github.io/certs/rballard_coursera_pml_0418.pdf)<br>
   - [Regression Models - April 2017](https://r-ballard.github.io/certs/rballard_coursera_regmod_0417.pdf)<br>
+  - [Statistical Inference - February 2017](https://r-ballard.github.io/certs/rballard_coursera_statinf_0217.pdf)<br>
   - [Reproducible Research - November 2016](https://r-ballard.github.io/certs/rballard_coursera_repres_1116.pdf)<br>
+  - [Exploratory Data Analysis - November 2016](https://r-ballard.github.io/certs/rballard_coursera_eda_1116.pdf)<br>
+  - [Getting and Cleaning Data - October 2016](https://r-ballard.github.io/certs/rballard_coursera_getandclean_1016.pdf)<br>
+  - [Data Scientist's Toolbox - August 2016](https://r-ballard.github.io/certs/rballard_coursera_dstb_0816.pdf)<br>
   - [R Programming - August 2016](https://r-ballard.github.io/certs/rballard_coursera_rprog_0816.pdf)<br>
-  - [R Programming - February 2017](https://r-ballard.github.io/certs/rballard_coursera_rprog_0217.pdf)<br>
 
 # Footer
 footer_show_references: true
