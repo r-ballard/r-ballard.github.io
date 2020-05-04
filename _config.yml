@@ -77,6 +77,34 @@ certifications_content: | #multiline section
   - [Data Scientist's Toolbox - August 2016](https://r-ballard.github.io/certs/rballard_coursera_dstb_0816.pdf)<br>
   - [R Programming - August 2016](https://r-ballard.github.io/certs/rballard_coursera_rprog_0816.pdf)<br>
 
+  **DataCamp**
+  - [Machine Learning Fundamentals Track](https://r-ballard.github.io/certs/rballard_dc_mlfpy_tr.pdf)
+  - [Data Analyst with Python Track](https://r-ballard.github.io/certs/rballard_dc_dataanpy_tr.pdf)
+  - [Data Manipulation with Python Track](https://r-ballard.github.io/certs/rballard_dc_datamanpy_tr.pdf)
+  - [Data Scientist with Python Track](https://r-ballard.github.io/certs/rballard_dc_dspy_tr.pdf)
+  - [Importing & Cleaning Data with Python Track](https://r-ballard.github.io/certs/rballard_dc_impclean_tr.pdf)
+  - [Python Programmer Track](https://r-ballard.github.io/certs/rballard_dc_pyprog_tr.pdf)
+  - [Case Study: School Budgeting with Machine Learning in Python - August 2017](https://r-ballard.github.io/certs/rballard_dc_csbudgetmlpy_0817.pdf)
+  - [Introduction to Network Analysis in Python - October 2017](https://r-ballard.github.io/certs/rballard_dc_intnetan_1017.pdf)
+  - [Introduction to Deep Learning in Python - October 2017](https://r-ballard.github.io/certs/rballard_dc_intdplrnpy_1017.pdf)
+  - [Unsupervised Learning in Python - September 2017](https://r-ballard.github.io/certs/rballard_dc_unsuplrnpy_0917.pdf)
+  - [Interactive Data Visualization with Bokeh - August 2017](https://r-ballard.github.io/certs/rballard_dc_intdatvisbok_0817.pdf)
+  - [Supervised Learning with scikit-learn - August 2017](https://r-ballard.github.io/certs/rballard_dc_svlscikit_0817.pdf)
+  - [Statistical Thinking in Python (Part 1) - July 2017](https://r-ballard.github.io/certs/rballard_dc_statthink1_0717.pdf)
+  - [Statistical Thinking in Python (Part 2) - July 2017](https://r-ballard.github.io/certs/rballard_dc_statthink2_0717.pdf)
+  - [Merging DataFrames with pandas - July 2017](https://r-ballard.github.io/certs/rballard_dc_mergepanda_0717.pdf)
+  - [Manipulating DataFrames with pandas - July 2017](https://r-ballard.github.io/certs/rballard_dc_mandfpan_0617.pdf)
+  - [pandas Foundations - June 2017](https://r-ballard.github.io/certs/rballard_dc_pandasfound_0617.pdf)
+  - [Python Data Science Toolbox (Part 1) - June 2017](https://r-ballard.github.io/certs/rballard_dc_pydst1_0617.pdf)
+  - [Python Data Science Toolbox (Part 2) - June 2017](https://r-ballard.github.io/certs/rballard_dc_pydst2_0617.pdf)
+  - [Introduction to Databases in Python - June 2017](https://r-ballard.github.io/certs/rballard_dc_intdbpy_0617.pdf)
+  - [Intermediate Importing Data in Python -  June 2017](https://r-ballard.github.io/certs/rballard_dc_intmimpdatpy_0717.pdf)
+  - [Introduction to Data Visualization in Python - June 2017 ](https://r-ballard.github.io/certs/rballard_dc_datavizpy_0717.pdf)
+  - [Cleaning Data in Python - June 2017](https://r-ballard.github.io/certs/rballard_dc_cleandatpy_0617.pdf)
+  - [Introduction to Importing Data in Python - June 2017](https://r-ballard.github.io/certs/rballard_dc_impdatpy_0617.pdf)
+  - [Intermediate Python - March 2017](https://r-ballard.github.io/certs/rballard_dc_intpy_0317.pdf)
+
+
 # Footer
 footer_show_references: true
 
