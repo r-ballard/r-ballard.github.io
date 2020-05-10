@@ -1,6 +1,14 @@
 # Project template
 - layout: top-middle
-  name: Coursera Practical Machine Learning Final Project April 2018
+  name: Twitter Clustering Using COVID-19 Search Terms Near an International Airport
+  #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
+  github: r-ballard/twitter_clustering
+  quote: >
+    Text clustering using open data with exploratory charts in a Markdown Jupyter Notebook. - May 2020
+  description: | # this will include new lines to allow paragraphs
+    Sample EDA and K-means clustering analysis for contemporary Tweets mentioning COVID-19 near an international airport.  
+- layout: top-middle
+  name: Coursera Practical Machine Learning Final Project -  April 2018
   #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
   github: r-ballard/pml-April2018
   quote: >
@@ -9,7 +17,7 @@
     Sample random forest model using R.
 # Project template
 - layout: top-middle
-  name: Coursera Exploratory Data Analysis Project 1 October 2016
+  name: Coursera Exploratory Data Analysis Project 1 - October 2016
   #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
   github: r-ballard/ExData_Plotting1
   quote: >
