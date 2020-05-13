@@ -1,0 +1,308 @@
+I"Ѣ<h1 id="twitter-k-means-clustering-sample-analysis">Twitter K-Means Clustering Sample Analysis</h1>
+<p>R. Ballard - May 2020</p>
+
+<p>This markdown Jupyter notebook contains a write-up and python script for a relatively simple k-means analysis on recent Tweets with given search parameters.</p>
+
+<h1 id="overview">Overview</h1>
+<ol>
+  <li>A Twitter Dev account was created and an API key was generated.</li>
+  <li>An Environment is deployed which has the necessary analysis packages installed #TODO: CREATE ENVIRONMENT REPO.</li>
+  <li>Search parameters are set. In this case they relate to COVID-19 and are either geotagged or belong to accounts with locations listed within 10km of Reagan National Airport.</li>
+  <li>1000 Recent Tweets with the above parameters are returned from the Twitter search API.</li>
+  <li>This is saved to an archive directory. By repeatedly extracting the data over time trend analysis becomes possible #TODO: DEVELOP TREND ANALYSIS</li>
+  <li></li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">tweepy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">silhouette_score</span>
+</code></pre></div></div>
+
+<p>This will download nltk stopwords and punkt if not already downloaded.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">%%</span><span class="n">capture</span>
+<span class="n">nltk_pkg</span> <span class="o">=</span> <span class="p">[</span><span class="s">'stopwords'</span><span class="p">,</span><span class="s">'punkt'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nltk_pkg</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">nltk</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">LookupError</span><span class="p">:</span>
+        <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="define-constants-and-global-variables">Define Constants and Global Variables</h2>
+<p>Global constants within the script are defined. Timestamp enumerated, secrets path named.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+
+<span class="c1">#Set current datetime, will be used for processing timestamps
+</span><span class="n">ymdhms</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">Y</span><span class="si">%</span><span class="s">m</span><span class="si">%</span><span class="s">d</span><span class="si">%</span><span class="s">H</span><span class="si">%</span><span class="s">M</span><span class="si">%</span><span class="s">S'</span><span class="p">)</span>
+
+<span class="c1">#Set location of keyfile .ini - contains Twitter app API secrets
+</span><span class="n">keyfile_path</span><span class="o">=</span><span class="p">[</span><span class="n">secrets</span><span class="o">.</span><span class="n">ini</span><span class="p">]</span>
+
+<span class="c1">#Read secrets, could be assigned as environment variables, etc
+</span><span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">keyfile_path</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Stop word list is selected, nltk English stopwords are used.
+Then, additional strings are added. These were selected by the analyst as they occured frequently in the dataset and have limited value in the context of analysis. These additional strings were identified by manual inspection of the tokenized dataset.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Set variable to be used for stop words set to nltk English stopwords
+</span><span class="n">stop_words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">corpus</span><span class="o">.</span><span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">))</span>
+<span class="n">stop_words</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">'rt'</span><span class="p">,</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">,</span><span class="s">'`'</span><span class="p">,</span><span class="s">'``'</span><span class="p">,</span><span class="s">'”'</span><span class="p">,</span><span class="s">'“'</span><span class="p">,</span><span class="s">'’'</span><span class="p">,</span><span class="s">'•'</span><span class="p">,</span><span class="s">'</span><span class="se">\'</span><span class="s">s'</span><span class="p">,</span><span class="s">'</span><span class="se">\'\'</span><span class="s">'</span><span class="p">,</span><span class="s">'</span><span class="se">\'</span><span class="s">ve'</span><span class="p">,</span><span class="s">'</span><span class="se">\'</span><span class="s">ll'</span><span class="p">,</span><span class="s">'‼️'</span><span class="p">,</span><span class="s">"'d"</span><span class="p">,</span> <span class="s">"'re"</span><span class="p">,</span> <span class="s">'could'</span><span class="p">,</span> <span class="s">'might'</span><span class="p">,</span> <span class="s">'must'</span><span class="p">,</span> <span class="s">"n't"</span><span class="p">,</span> <span class="s">'need'</span><span class="p">,</span> <span class="s">'sha'</span><span class="p">,</span> <span class="s">'wo'</span><span class="p">,</span> <span class="s">'would'</span><span class="p">])</span>
+<span class="n">stop_words</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#This regex will perform a capturing look-forward from http* or ftp* to the first following space. This is used to parse out urls in tweets
+</span><span class="n">url_target</span> <span class="o">=</span> <span class="s">r'(http[s]?|ftp)([^\s]+)'</span>
+
+<span class="c1">#This regex searches for words ending in ellipses, which are truncated and may inflate counts
+#e.g. con... short for contagious? congress? continent? ..etc
+</span><span class="n">trunc_str_target</span> <span class="o">=</span> <span class="s">r'(\S+\.\.\.)'</span>
+<span class="n">trunc_str_target2</span> <span class="o">=</span> <span class="s">r'(\S+…)'</span>
+</code></pre></div></div>
+
+<h2 id="interact-with-recent-tweets-using-tweepy">Interact with recent Tweets using Tweepy</h2>
+<p>In this step we pass Twitter API keys read in from the config file defined above to the Twitter API using tweepy. With an authenticated token passed an API instance is generated and we are able to select from recent Tweets for our analysis.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Authenticate key parsed from secrets
+</span><span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">AppAuthHandler</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s">'consumer_keys'</span><span class="p">][</span><span class="s">'API_KEY'</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s">'consumer_keys'</span><span class="p">][</span><span class="s">'API_SECRET_KEY'</span><span class="p">])</span>
+
+<span class="c1">#Instatiate tweepy API object, set large timeout value to extract many tweets
+</span><span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="define-search-terms">Define Search Terms</h2>
+<p>We define search criteria to be passed to the Twitter API. Documentation here : #TODO LIST DOCUMENTATION</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#TODO List Twitter API documentation
+#Sets search terms, joins term list using OR as concatenator to generate search string
+</span>
+<span class="n">target_terms</span><span class="o">=</span><span class="p">[</span><span class="s">'coronavirus'</span><span class="p">,</span><span class="s">'covid-19'</span><span class="p">,</span><span class="s">'covid19'</span><span class="p">,</span><span class="s">'air travel'</span><span class="p">]</span>
+<span class="n">separator</span> <span class="o">=</span> <span class="s">" OR "</span> 
+<span class="n">target_term_str</span> <span class="o">=</span> <span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_terms</span><span class="p">)</span>
+
+<span class="c1">#TODO LIST API SEARCH LOCATION DEFINITION ETC
+</span>
+<span class="s">"""Sets search criteria for 10km of Reagan airport
+could be extended to include additional airports or other locations and use this in an iterator"""</span>
+
+<span class="n">airport_locs</span><span class="o">=</span><span class="p">{</span><span class="s">'reagan'</span><span class="p">:{</span><span class="s">'lat'</span><span class="p">:</span><span class="mf">38.8512</span><span class="p">,</span><span class="s">'long'</span><span class="p">:</span><span class="o">-</span><span class="mf">77.0402</span><span class="p">}}</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">r_unit</span> <span class="o">=</span><span class="s">'km'</span>
+
+<span class="n">loc_target</span> <span class="o">=</span> <span class="n">f</span><span class="s">"{airport_locs['reagan']['lat']},"</span><span class="o">+</span>\
+                <span class="n">f</span><span class="s">"{airport_locs['reagan']['long']},"</span><span class="o">+</span>\
+                <span class="n">f</span><span class="s">"{radius}{r_unit}"</span>
+</code></pre></div></div>
+
+<p>The below chunk will set a value for max_tweets, 1000.
+Instantiate an empty list of searched_tweets
+Set a last_id value of -1 (most recent) and iterate while the length of the list searched_tweets is less than 1000.
+For each iteration, query the Twitter API via the Tweepy authentication object to return a Tweet with max_id of last_id
+Returned tweets will be apended to a list of searched_tweets
+last_id will be backwards iterated from most recent found Tweet.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">max_tweets</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">searched_tweets</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">last_id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">searched_tweets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_tweets</span><span class="p">:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">max_tweets</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">searched_tweets</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">new_tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">target_term_str</span><span class="p">,</span> <span class="n">geocode</span> <span class="o">=</span> <span class="n">loc_target</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">max_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">last_id</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_tweets</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">searched_tweets</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_tweets</span><span class="p">)</span>
+        <span class="n">last_id</span> <span class="o">=</span> <span class="n">new_tweets</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="nb">id</span>
+    <span class="k">except</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">TweepError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># depending on TweepError.code, one may want to retry or wait
+</span>        <span class="c1"># to keep things simple, we will give up on an error
+</span>        <span class="k">break</span>
+</code></pre></div></div>
+
+<p>The below chunk will instantiate an empty dataframe, df.
+It will then iterate over the items in searched_tweets and for each item in searched_tweets append a row to df (Append a Tweet item to df) using json_normalize.
+Subsequently, the DataFrame index will be reset and our previously defined timestmap will be appended to the dataframe.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Convert list of tweets to dataframe
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">searched_tweets</span><span class="p">)):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pandas</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">searched_tweets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">_json</span><span class="p">),</span><span class="n">sort</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+<span class="c1">#Reset Index, format created_at field to timestamp from Twitter datetime
+</span><span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'created_at'</span><span class="p">]</span><span class="o">=</span><span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">'created_at'</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">a </span><span class="si">%</span><span class="s">b </span><span class="si">%</span><span class="s">d </span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M:</span><span class="si">%</span><span class="s">S </span><span class="si">%</span><span class="s">z </span><span class="si">%</span><span class="s">Y'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The below chunk will write the Tweet dataframe to a user defined write directory as a pipe-delimited csv.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Write data to csv
+</span>
+<span class="c1">#TODO abstract write path
+</span><span class="n">write_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s">'paths'</span><span class="p">][</span><span class="s">'write_path'</span><span class="p">])</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="n">f</span><span class="s">'twitter_dataset_{len(df)}_{ymdhms}.csv'</span>
+
+<span class="n">write_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">write_dir</span><span class="p">,</span><span class="n">file_name</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">write_path</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">'|'</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="parse-text">Parse Text</h2>
+<p>This Section contains scripting for parsing and cleaning the returned Tweet dataframe containing Tweets with the above defined search criteria.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Create a new field in the Tweet dataframe containing Tweets cast to lowercase values
+</span><span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<span class="c1">#This section drops url_target, trunc_str_target, trunc_str_target2
+</span><span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">url_target</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span><span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">trunc_str_target</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span><span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">trunc_str_target2</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span><span class="n">regex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#This creates a new field in dataframe that applies nlt.word_tokenize to lowercase string Tweet in df
+</span><span class="n">df</span><span class="p">[</span><span class="s">'tokenized_text'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">)</span>
+
+<span class="c1">#Further subsets Tweets by dropping stop words identified above.
+</span><span class="n">df</span><span class="p">[</span><span class="s">'tokenized_text_drop_sw'</span><span class="p">]</span> <span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s">'tokenized_text'</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">x</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stop_words</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h3 id="bag-of-words">Bag Of Words</h3>
+<p>The below cell uses a list generator to create a single list containing all tokenized Tweets.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#This creates a bag of words from the tweets. Concatenates all tokenized tweet text into a list.
+#https://stackoverflow.com/questions/716477/join-list-of-lists-in-python
+</span>
+<span class="n">token_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s">'tokenized_text_drop_sw'</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="exploratory-charts">Exploratory Charts</h2>
+<p>This section contains exploratory graphs visualizing the Tweet dataset.</p>
+
+<h3 id="1-common-word-frequency-distribution-of-most-common-words-in-token">1. Common word frequency distribution of most common words in token</h3>
+<p>Below is a histogram containing counts of the 25 most common words</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Common word frequency distribution
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Top 25 most common words'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">fd</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">FreqDist</span><span class="p">(</span><span class="n">token_list</span><span class="p">)</span>
+<span class="n">fd</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="n">cumulative</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/images/kmeans_charts/output_26_0.png" alt="png" /></p>
+
+<h3 id="2-log-log-plot">2. Log-Log Plot</h3>
+<p>The below plot is a Log-Log plot of the Tweet bag of words. This chart can indicate focus of conversation. If we see the most common words used much more frequently with plateaus present that indicates that the more common words are used exponentially more than the less-common ones. Which could be an indicator that many people are Tweeting about the same thing.</p>
+
+<p>A wider array of topics would lead to a more diffuse lexicon which would lead to a more tapered decrease in the log-log chart.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Log-Log Plot
+</span><span class="n">word_counts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">token_list</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">word_counts</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Freq"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"Word Rank"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'log-log plot of words frequency'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Text(0.5,1,'log-log plot of words frequency')
+</code></pre></div></div>
+
+<p><img src="/images/kmeans_charts/output_28_1.png" alt="png" /></p>
+
+<h2 id="k-means-clustering">K-Means Clustering</h2>
+<p>In this section we will create a Term Frequency Inverse Document Frequency Vectorizer with the modified nltk stopwords list and use this to transform the Tweets.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#Vectorizer reverts to untokenized field, could be adapted to use tokenized field with stop words already removed.
+</span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">stop_words</span> <span class="o">=</span> <span class="n">stop_words</span><span class="p">)</span>
+<span class="c1">#vectorizer = TfidfVectorizer(stop_words = stop_words,tokenizer=nltk.word_tokenize)
+</span>
+<span class="n">desc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'text_lower'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1">#This reverts to fitting the lowercase text of the tweets rather than the tokenized version.
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="elbow-chart">Elbow Chart</h3>
+<p>With the vectorized set of Tweets we generate an Elbow chart to attempt to find the inflection point where the slope of the Within-Cluster Sum of Squares line begins to become flattened. This will aid us in determining the optimal number of clusters for the dataset.</p>
+
+<p>In the below example 9 looks to be a candidate for the number of clusters.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wcss</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">):</span>
+    <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">i</span><span class="p">,</span><span class="n">init</span><span class="o">=</span><span class="s">'k-means++'</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">n_init</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">wcss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">inertia_</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">),</span><span class="n">wcss</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'The Elbow Method'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Number of clusters'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'WCSS'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/kmeans_charts/output_32_0.png" alt="png" /></p>
+
+<h3 id="silhouette-chart">Silhouette Chart</h3>
+
+<p>Similar to the Elbow Chart The Silhoette Chart will help us in determining the optimal number of clusters K to in which to group the Tweets.</p>
+
+<p>The silhouette value measures how similar a point is to its own cluster (cohesion) compared to other clusters (separation) The silhouette value is between -1 and 1, and higher values indicate better cohesion and separation (more optimal clustering).</p>
+
+<p>Based on this example 9 clusters appears to be optimal.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sil</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">kmax</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># dissimilarity would not be defined for a single cluster, thus, minimum number of clusters should be 2
+</span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">kmax</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+  <span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span>
+  <span class="n">sil</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">silhouette_score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="s">'euclidean'</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">kmax</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">sil</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'The Silhouette Method'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Number of clusters'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Silhouette Value'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/kmeans_charts/output_34_0.png" alt="png" /></p>
+
+<h2 id="clustering">Clustering</h2>
+<p>With the number of clusters identified using the elbow method above we then fit our model and for each cluster list the top 25 words most common words in that cluster. This gives us some indication of different topical groupings for recent Tweets mentioning COVID-19 in their text bodies for recent Tweets and Twitter accounts based near Reagan National Airport.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">word_features</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="n">n_init</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># n_init(number of iterations for clustering) n_jobs(number of cpu cores to use)
+</span><span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1"># We look at n the clusters generated by k-means.
+</span><span class="n">common_words</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">26</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">centroid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">common_words</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">+</span> <span class="s">' : '</span> <span class="o">+</span> <span class="s">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">word_features</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">centroid</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 : new, squad, name, afthunderbirds, formation, flyovers, blueangels, series, deptofdefense, better, york, travel, feet, feel, facing, flyingwithsara, flying, flu, federal, fallen, flowers, flower, floating, fever, flights
+1 : covid, 19, cdc, overruled, troubling, screenings, fever, restart, headline, push, scientists, airport, brasilmagic, like, white, house, states, united, countries, cities, wildfire, transit, border, mexican, spreading
+2 : symbolic, ignored, wasted, kicked, feet, dncwarroom, issued, ban, experts, trump, said, time, travel, flower, floating, flowers, flu, flights, flight, zealand, first, flying, finds, fill, fever
+3 : wane, message, reopen, country, scottdetrow, lots, week, white, house, coronavirus, time, first, zealand, flight, fiqaajamal, floating, flower, flowers, flu, flights, fever, finds, fill, feet, feel
+4 : put, ranttmedia, truth, twice, shoes, swift, jonathan, around, lie, world, said, travel, facing, flower, floating, flights, flight, experts, first, fiqaajamal, extremely, finds, face, fallen, fill
+5 : en, estados, ser, para, recibir, de, ciudadanos, unidos, inscríbase, viajeros, alertas, usembassyve, localizado, federal, facing, flower, face, floating, flights, flight, first, fiqaajamal, finds, feel, fallen
+6 : statedept, alerts, 00, please, located, citizen, enroll, receive, travelers, ensure, related, covid19, visit, step, enrollment, answers, questions, et, 21, published, health, international, belarus, croatia, canada
+7 : president, coronavirus, air, travel, quarantine, trump, urge, paris, two, viewership, government, strongly, british, borisjohnson, devastate, rethink, natgeotravel, several, airlines, due, transatlantic, nilegardiner, week, pence, officials
+8 : confidence, crews, measures, increased, restore, needed, public, safety, keep, safe, amp, air, passengers, flyingwithsara, pax, agree, afa_cwa, travel, floating, flights, flight, flower, zealand, fever, first
+</code></pre></div></div>
+
+:ET
