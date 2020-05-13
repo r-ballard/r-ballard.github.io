@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "K-Means Clustering Using Public Data"
+date: 2020-05-11
 ---
 
 
