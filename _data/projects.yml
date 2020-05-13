@@ -6,7 +6,8 @@
   quote: >
     K-means clustering Using COVID-19 search terms near an international airport.    
   description: | # this will include new lines to allow paragraphs
-    Sample EDA and K-means clustering analysis for contemporary Tweets mentioning COVID-19 near an international airport.  
+    Sample EDA and K-means clustering analysis for contemporary Tweets mentioning COVID-19 near an international airport.
+    [Markdown Blog Post]({% post_url 2020-07-21-twitter-clustering %})
 - layout: top-middle
   name: Coursera Practical Machine Learning Final Project -  April 2018
   #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
