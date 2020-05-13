@@ -236,7 +236,7 @@ fd.plot(25,cumulative=False)
 ```
 
 
-![png](C:/Users/busybox/Desktop/Repos/r-ballard.github.io/images/kmeans_charts/output_26_0.png)
+![png](/images/kmeans_charts/output_26_0.png)
 
 
 ### 2. Log-Log Plot
@@ -263,7 +263,7 @@ plt.title('log-log plot of words frequency')
 
 
 
-![png](C:/Users/busybox/Desktop/Repos/r-ballard.github.io/images/kmeans_charts/output_28_1.png)
+![png](/images/kmeans_charts/output_28_1.png)
 
 
 ## K-Means Clustering
@@ -302,7 +302,7 @@ plt.show()
 ```
 
 
-![png](C:/Users/busybox/Desktop/Repos/r-ballard.github.io/images/kmeans_charts/output_32_0.png)
+![png](/images/kmeans_charts/output_32_0.png)
 
 
 ### Silhouette Chart
@@ -332,7 +332,7 @@ plt.show()
 ```
 
 
-![png](C:/Users/busybox/Desktop/Repos/r-ballard.github.io/images/kmeans_charts/output_34_0.png)
+![png](/images/kmeans_charts/output_34_0.png)
 
 
 ## Clustering
