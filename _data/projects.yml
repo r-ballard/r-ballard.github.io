@@ -1,7 +1,7 @@
 # Project template
 - layout: top-middle
   name: Text Clustering Using Open Data With Exploratory Charts In A Markdown Jupyter Notebook. - May 2020
-  #link: Link to project (eg. sproogen.github.io/modern-resume-theme)(optional)
+  link: r-ballard.github.io/_posts/2020-05-11-twitter_clustering.md
   github: r-ballard/twitter_clustering
   quote: >
     K-means clustering Using COVID-19 search terms near an international airport.    
