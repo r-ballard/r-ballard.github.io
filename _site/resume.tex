@@ -1,248 +1,206 @@
-%!TEX TS-program = xelatex
-%!TEX encoding = UTF-8 Unicode
-
-\documentclass[11pt, a4paper]{article}
-
-% LAYOUT
-%--------------------------------
-% Margins
-\usepackage{geometry}
-\geometry{a4paper, left=35mm, right=35mm, top=25mm, bottom=25mm}
-
-% Do not indent paragraphs
-\setlength\parindent{0in}
-
-% Enable multicolumns
-\usepackage{multicol}
-\setlength{\columnsep}{-3.5cm}
-
-% Uncomment to suppress page numbers
-% \pagenumbering{gobble}
-
-% LANGUAGE
-%--------------------------------
-\usepackage{fontspec,xgreek,polyglossia}
-\defaultfontfeatures{Mapping=tex-text}
-\setmainfont[Path=font/, Mapping=tex-text]{GFSDidot.otf}
-
-\setdefaultlanguage{english}
-\setotherlanguage[variant=modern]{greek}
-% add hyp rules or replace compound words with \hyp{}
-\usepackage{hyphenat}
-
-% TYPOGRAPHY
-%--------------------------------
-\usepackage{xunicode}
-\usepackage{xltxtra}
-
-% nice icons
-\usepackage{fontawesome5}
-\usepackage{academicons}
-% reduce widows and orphans
-\usepackage[all]{nowidow}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-\usepackage[protrusion=true,final]{microtype}
-\usepackage{hyperref}
-
-
-% MARGIN NOTES
-%--------------------------------
-\usepackage{marginnote}
-\newcommand{\note}[1]{\marginnote{\scriptsize #1}}
-\renewcommand*{\raggedleftmarginnote}{}
-\setlength{\marginparsep}{7pt}
-\reversemarginpar
-
-% HEADINGS
-%--------------------------------
-\usepackage{sectsty}
-\usepackage[normalem]{ulem}
-\sectionfont{\rmfamily\mdseries}
-\subsectionfont{\rmfamily\mdseries\scshape\normalsize}
-\subsubsectionfont{\rmfamily\bfseries\upshape\normalsize}
-\setcounter{secnumdepth}{0}
-
-% PDF SETUP
-%--------------------------------
-\usepackage{hyperref}
-\hypersetup
-{
-  pdfauthor={Ραφαηλια Ασημακοπουλου},
-  pdfsubject={Ραφαηλια Ασημακοπουλου CV},
-  pdftitle={Ραφαηλια Ασημακοπουλου CV},
-  colorlinks, breaklinks, xetex, bookmarks,
-  filecolor=black,
-  urlcolor=[rgb]{0.117,0.682,0.858},
-  linkcolor=[rgb]{0.117,0.682,0.858},
-  linkcolor=[rgb]{0.117,0.682,0.858},
-  citecolor=[rgb]{0.117,0.682,0.858}
-}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wilson Resume/CV
+% XeLaTeX Template
+% Version 1.0 (22/1/2015)
 %
-%bibliography
-\usepackage[backend=biber,style=numeric,firstinits=true,sorting=ynt,maxnames=5,minnames=3,hyperref=false,isbn=false,doi=false,url=false,safeinputenc=true,language=english]{biblatex}
-\usepackage{csquotes}
-\usepackage{hyperref}
-\DeclareNameAlias{default}{last-first}
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Howard Wilson (https://github.com/watsonbox/cv_template_2004) with
+% extensive modifications by Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%J1, J2, etc
-\makeatletter
-\define@key{blx@bib2}{prefixnumbers}{%
-  \def\blx@prefixnumbers{#1}%
-  \iftoggle{blx@defernumbers}
-    {}
-    {\iftoggle{blx@labelnumber}
-       {\blx@warning{%
-          Option 'prefixnumbers' requires global\MessageBreak
-          'defernumbers=true'}}
-       {}}}
-\makeatother
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
 
-% table of contents without dots
-\usepackage{tocloft}
-\renewcommand{\cftdot}{}
+\documentclass[10pt]{article} % Default font size
 
-% bibliography sections
-\makeatletter
-\newcommand{\bibsection}[3]{
-\subsection{#1}
-\begin{refsection}[#2]
-  \nocite{*}
-  \begin{refcontext}[prefixnumbers=#3]
-    \printbibliography[heading=none]
-  \end{refcontext}
-\end{refsection}
-}
-\makeatother
+\input{structure.tex} % Include the file specifying document layout
 
-% titlepages style
-\newlength{\drop}% for my convenience
+%----------------------------------------------------------------------------------------
 
-%titleS
-\makeatletter
-\newcommand*{\titleS}{\begingroup% Scripts, T&H p 151
-\drop = 0.1\textheight
-\centering
-\vspace*{\drop}
-{\Huge \@title}\\[\baselineskip]
-{\large\itshape \@author}\\[\baselineskip]
-\vfill
-\rule{0.4\textwidth}{0.4pt}\\[\baselineskip]
-{\large\itshape \@date}\par
-\vspace*{\drop}
-\endgroup}
-\makeatother
-
-%titleGM
-\makeatletter
-\newcommand*{\titleGM}{\begingroup% Gentle Madness
-\drop = 0.1\textheight
-  \hbox{%
-  \hspace*{0.1\textwidth}%
-  \rule{1pt}{\textheight}
-  \hspace*{0.05\textwidth}%
-  \parbox[b]{0.75\textwidth}{
-  \vbox{%
-    \vspace{\drop}
-    {\noindent\Huge\bfseries Ραφαηλια\\[0.5\baselineskip]
-               Ασημακοπουλου}\\[2\baselineskip]
-    {\Large\itshape Φοιτητρια\\[0.5\baselineskip]
-                    
-    \textsc{\LARGE \@title}
-    \vspace{0.5\textheight}
-    {\noindent \@date}\\[\baselineskip]}
-    }% end of vbox
-    }% end of parbox
-  }% end of hbox
-\endgroup}
-\makeatother
-
-\title{Βιογραφικό Σημείωμα}
-\author{Ραφαηλια Ασημακοπουλου, Φοιτητρια}
-
-% DOCUMENT
-%--------------------------------
 \begin{document}
 
-\pagestyle{empty}
-\titleGM
-\clearpage
+%----------------------------------------------------------------------------------------
+%	NAME AND CONTACT INFORMATION
+%----------------------------------------------------------------------------------------
 
-\tableofcontents
-\clearpage
+\title{R. Ballard -- Résumé} % Print the main header
 
-\pagestyle{plain}
+%------------------------------------------------
 
+\parbox{0.5\textwidth}{ % First block
+\begin{tabbing} % Enables tabbing
+\hspace{3cm} \= \hspace{4cm} \= \kill % Spacing within the block
+%{\bf Address} \> 123 Broadway,\\ % Address line 1
+%\> City, 12345 \\ % Address line 2
+%{\bf Date of Birth} \> 7$^{th}$ September 1979 \\ % Date of birth 
+%{\bf Nationality} \> British % Nationality
+\end{tabbing}}
+\hfill % Horizontal space between the two blocks
+\parbox{0.5\textwidth}{ % Second block
+\begin{tabbing} % Enables tabbing
+\hspace{3cm} \= \hspace{4cm} \= \kill % Spacing within the block
+%{\bf Home Phone} \> +0 (000) 111 1111 \\ % Home phone
+%{\bf Mobile Phone} \> +0 (000) 111 1112 \\ % Mobile phone
+{\bf Email} \> \href{mailto:russellcballard@gmail.com}{russellcballard@gmail.com} \\ % Email address
+\end{tabbing}}
 
+%----------------------------------------------------------------------------------------
+%	PERSONAL PROFILE
+%----------------------------------------------------------------------------------------
 
-{\LARGE Ραφαηλια Ασημακοπουλου}\\[.2cm]
-\textit{Φοιτητρια}\\[.2cm]
+\section{About}
 
-\begin{multicols}{2}
+Experienced consultant with expertise in software engineering, enterprise analytics, and large-scale data projects.
+Interested in cloud and distributed computing architectures, generative art and design, and advanced analytics.
 
-{\scriptsize
-Πανεπιστήμιο Πατρας\\
-Ελλάδα\\
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	EMPLOYMENT HISTORY SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Select Experience}
+
+\job
+{Jan 2019 -}{Present}
+{Accenture Federal Services, 800 North Glebe Road Suite 700, Arlington, VA, United States}
+{https://www.accenture.com/us-en/industries/afs-index}
+{Management Consulting Delivery Specialist}
+{Member of FedScoop 50 2018, 2019, Fed 100 2020 Award winning team of data science, engineering, and visualization specialists. Design, develop, implement, and augment USDA data reporting and analytics.
+Utilize Boto, Spark, PySpark, Python, Pandas, Numpy, SciPy, geoPandas, Fiona, GDAL, Hive, Hadoop, Impala, SQL, Sqoop, Tableau, and various other big data, informatic, GIS, and software engineering frameworks to optimize high throughput data analytics for critical infrastructure and monitoring regimens for SES and functional group federal clients. Work closely with teammates in an Agile environment utilizing Jira to research, prototype, and quickly implement best practices in virtualization, data aggregation, and statistical inference algorithmic design.\\
+\rule{0mm}{5mm}\textbf{Technologies:} AWS, Enterprise RedHat Linux, Python, Cloudera, Hive, Impala, Hue, Tableau, Various Data Warehouse Technologies}
+
+%------------------------------------------------
+
+\job
+{Oct 2018 -}{Jan 2019}
+{Leidos, 11951 Freedom Dr, Reston, VA 20190, United States}
+{https://www.leidos.com/}
+{Data Scientist}
+{Capture business requirements and rules, design the associated logical models, and create all required documentation to support, communicate, and validate data models. Analyze actual and predictable, interacting, operational activities of systems to obtain a quantitative, rational basis for decision-making through the application of logic and scientific or economic disciplines and techniques. 
+
+Devise modeling and measuring techniques, and utilizes mathematics, statistical methods, engineering methods, operational mathematics techniques (linear programming, game theory, probability theory, symbolic language, etc.) and other principles and laws of scientific and economic disciplines to investigate complex issues, identify, and solve problems, and aid better decision making.
+
+Apply and/or develop highly advanced technologies, scientific principles, theories, and concepts to assist organizations in advancing performance and operating more efficiently Assist in addressing requirements and the evaluation of data assessment strategies: sampling, statistical analysis, evaluation, flow processing, and management assessment strategies Develop cost-benefit analysis, data collection, data analysis, risk analysis, simulation model execution, economic analysis, and operational effectiveness studies. \\
+\rule{0mm}{5mm}\textbf{Technologies:} Python, Spyder, OBIEE, Visio, Microsoft Project}
+
+%------------------------------------------------
+\pagebreak
+
+\job
+{Jul 2016 -}{Oct 2018}
+{FI Consulting, 1500 Wilson Blvd, Arlington, VA 22209 , United States}
+{https://www.ficonsulting.com/}
+{Consultant}
+{Responsible for the development, validation, execution, and enhancement of the cash flow modeling for all of USDA RD’s credit programs in accordance with guidelines set by The Federal Credit Reform Act of 1990 and OMB Circular A-11. RD currently operates over 40 such credit programs, each with distinct regulations and program features with sum balances outstanding totaling over \$222 Billion. Responsible for conducting the cash flow analyses and subsidy rate calculations for these programs utilizing a variety of modeling tools and techniques to include:  R, SAS, and VBA based models with spline-based regression and stochastic macroeconomic elements. The outputs of these cash flow models were leveraged by OMB in generating The President’s Budget as well as to estimate program subsidy rate re-estimates for the purposes of Congressional appropriations. Conducts ad-hoc analyses for newly created programs, mid-year modifications to existing programs or program loans, and in response to Senior RD OCFO queries.
+
+Researched, documentented, and provided strategic recommendations on the processes and organizational design underpinning critical Rural Development internal control and compliance functions. Gathered and codified process narratives, federal regulations and RD internal guidance documents, conducted a series of interviews with RD controls staff, senior stakeholders in RD’s OCFO, and senior finance and internal control management in several other Federal agencies for benchmarking purposes. Synthesized this information to develop a strategic plan used as a roadmap for consolidating several siloed parallel processes and internal control functions into a modern, integrative compliance and control environment with a continuous monitoring and reporting approach.
+
+Coordinated validation efforts for the proofing of prose, scripts, and outputs used in Treasury OFR publications. Responsible for parsing Python scripts utilizing data science libraries such as: pandas, scikit-learn, numpy, etc. and data warehouse APIs (Bloomberg, Haver, etc.) as well as parallelization scripts for clustered computing execution using scheduling systems such as SLURM. Duties included validating the algorithms, analyses and underlying logic for OFR publication materials (analysis scripts, Excel Workbooks, etc) as well as verifying the conclusions and concepts discussed in OFR’s reports. Presented findings using markdown documents in Jupyter Notebooks.
+
+As part of a pilot loan program designed to lend money to community development financial institutions throughout the country which would then relend the money for the construction or refurbishment of community facilities such as: libraries, schools, healthcare centers, etc. Designed and developed core processes for the reception, parsing, and distribution of program applicant materials to community development finance underwriting SMEs subcontracted from throughout the country. Provided analytic support and facilitative expertise to ensure the senior underwriting team received project resources in a timely manner, assist in conducting organizational credit risk studies on applicant CDFIs, and ensure that the compressed project timeline was adhered to. Reported summary information, documentation, and regular updates on progress to key project management and key stakeholders at USDA. The program’s initial run resulted in the disbursement of \$149.7 Million to underwritten applicants. After the initial program run, processes were revised and automated using R scripts and repository APIs, and modelling assumptions used in forecasting tools were calibrated using R to generate loss curves for Re-Lender program loans based on RD’s CF Direct Program.\\
+\rule{0mm}{5mm}\textbf{Technologies:} Python, R, SAS, Spyder, Visio, Microsoft Project, Statisticial Modelling}
+
+%\begin{itemize-noindent}
+%\item{Developed spreadsheets for risk analysis on exotic derivatives on a wide array of commodities (ags, oils, precious and base metals.)}
+%\item{Managed blotter and secondary trades on structured notes, liaised with Middle Office, Sales and Structuring for bookkeeping.}
+%\end{itemize-noindent}
+
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolor sed sagittis.}
+
+\pagebreak
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION SECTION
+%----------------------------------------------------------------------------------------
+
+\section{Education}
+
+\tabbedblock{
+\bf{2005-2010} \> BSc Applied Mathematics (Statistics, Operations Research) - \href{http://www.vcu.edu}{Virginia Commonwealth University} \\[5pt]
+\textit{Summary and Inferential Statistics, Probability, Simulation, Data Analytics}
+%\textit{Third Year Project - 89\% awarded `Project of the Year 2007'}
 }
 
-\columnbreak
 
-{\scriptsize
-\faStyle{regular}
-\faHome \hspace{0.1cm} \href{http://github.com/moya10}{github.com/moya10}\\
-\faEnvelope \hspace{0.1cm} \href{mailto:simple@example.com}{simple@example.com}\\
 
-\vfill
+%----------------------------------------------------------------------------------------
+%	IT/COMPUTING SKILLS SECTION
+%----------------------------------------------------------------------------------------
 
-\faPhone +30 694 038 8968\\
+\section{Software Engineering Skills}
+
+\skillgroup{Programming Languages}
+{
+\textit{Python}\\
+\textit{R}\\
+\textit{Bash}
 }
 
-\end{multicols}
+%------------------------------------------------
 
-\vspace{30pt}
+%\skillgroup{Web Development}
+%{
+%\textit{HTML5, CSS3/SASS, JavaScript/CoffeeScript/jQuery}\\
+%\textit{Ruby on Rails v3.1}\\
+%\textit{Test:Unit, RSpec, Cucumber, Selenium} - automated testing frameworks\\
+%\textit{Apache/Nginx Web Servers}\\
+%}
 
+%------------------------------------------------
 
-\section{Ερευνητικά ενδιαφέροντα}
-          \quad Τεχνολογίες λογισμικού
-          \quad Προγραμματισμός πολυμέσων
-    
-% \vfill
+%\skillgroup{Miscellaneous}
+%{
+%\textit{Microsoft SQL Server 2000/2005} - database architecture and administration\\
+%\textit{Transact-SQL} - data definition and manipulation\\
+%\textit{SQL Profiler} - performance tuning and debugging\\
+%\textit{MySQL Server}\\
+%\textit{CVS, DARCS, git} - source version control
+%}
 
-\vspace{25pt}
+%----------------------------------------------------------------------------------------
+%	INTERESTS SECTION
+%----------------------------------------------------------------------------------------
 
-\section{Εργασία}
-\noindent
-\note{2012---}\textsc{Πανεπιστήμιο Πατρας}\\
-\emph{Φοιτητρια (2012--)}\\
-Πατρα, Ελλάδα\\[.2cm]
-\note{2012---}\textsc{Πανεπιστήμιο Πατρας}\\
-\emph{Φοιτητρια (2012--)}\\
-Πατρα, Ελλάδα\\[.2cm]
+\section{Interests}
 
-\section{Εκπαίδευση}
-\noindent
-\note{2012}\textsc{Msc Electrical and Computer Engineering}\\
-\emph{, }\\
-\emph{Electrical and Computer Engineering, University of Patras}.\\[.2cm]
+\interestsgroup{
+\interest{Statistics}
+\interest{Generative Art}
+}
 
-\section{Γλώσσες}
-\emph{Ελληνικά} (Μητρική)\\
-\emph{Αγγλικά} (Μετρια)\\
+%----------------------------------------------------------------------------------------
+%	REFEREE SECTION
+%----------------------------------------------------------------------------------------
 
-%\vspace{1cm}
-\vfill{}
-%\hrulefill
+%\section{Referees}
 
-\begin{center}
-{\scriptsize  Τελευταία ενημέρωση: \today\- •\-
-% ---- PLEASE LEAVE THIS BACKLINK FOR ATTRIBUTION AS PER CC-LICENSE
-Η σελιδοποίση έγινε με το \href{https://github.com/mrzool/cv-boilerplate}{
-\fontspec{Times New Roman}\XeTeX }\\
-% ---- FILL IN THE FULL URL TO YOUR CV HERE
-\href{http://github.com/moya10}{github.com/moya10}}
-\end{center}
+%\parbox{0.5\textwidth}{ % First block
+%\begin{tabbing}
+%\hspace{2.75cm} \= \hspace{4cm} \= \kill % Spacing within the block
+%{\bf Name} \> Bill Lumbergh \\ % Referee name
+%{\bf Company} \> Initech Inc. \\ % Referee company
+%{\bf Position} \> Vice President \\ % Referee job title 
+%{\bf Contact} \> \href{mailto:bill@initech.com}{bill@initech.com} % Referee contact information
+%\end{tabbing}}
+%\hfill % Horizontal space between the two blocks
+%\parbox{0.5\textwidth}{ % Second block
+%\begin{tabbing}
+%\hspace{2.75cm} \= \hspace{4cm} \= \kill % Spacing within the block
+%{\bf Name} \> Michael "Big Mike" Tucker\\ % Referee name
+%{\bf Company} \> Burbank Buy More \\ % Referee company
+%{\bf Position} \> Store Manager \\ % Referee job title 
+%{\bf Contact} \> \href{mailto:mike@buymore.com}{mike@buymore.com} % Referee contact information
+%\end{tabbing}}
+
+%----------------------------------------------------------------------------------------
 
 \end{document}
