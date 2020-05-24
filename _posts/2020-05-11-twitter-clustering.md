@@ -1,5 +1,5 @@
 ---
-title:  "K-Means Clustering Using Public Data"
+permalink: "twitter-kmeans"
 date: 2020-05-11
 layout: post
 ---
