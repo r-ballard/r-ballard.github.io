@@ -1,7 +1,6 @@
 # Site
 repository: r-ballard/r-ballard.github.io #Git repository where your resume will be hosted, only required if you are hosting on GitHub (eg. sproogen/modern-resume-theme)
 # favicon: Directory of your favicon (eg. images/favicon.ico)(optional)
-
 # Personal info
 name: R. Ballard
 title: Data Engineering and Analytics
@@ -112,6 +111,9 @@ footer_show_references: true
 # theme: modern-resume-theme (Use this is you are hosting your resume yourself)
 # remote_theme: sproogen/modern-resume-theme (Use this if you are hosting your resume on GitHub)
 
+relative_links:
+  enabled:  true
+  collections: true
 sass:
   sass_dir: _sass
   style: compressed
