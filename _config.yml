@@ -66,6 +66,9 @@ more_content: | # this will include new lines to allow paragraphs
 
 certifications_content: | #multiline section
   
+  **Agile Institue**
+  - [Certified SAFe® 5 Practitioner - May 2020 to May 2021](https://www.youracclaim.com/badges/7725e373-292f-4b53-b944-44535c659bbc/public_url)<br>
+
   **Coursera**
   - [Practical Machine Learning - April 2018](https://r-ballard.github.io/certs/rballard_coursera_pml_0418.pdf)<br>
   - [Regression Models - April 2017](https://r-ballard.github.io/certs/rballard_coursera_regmod_0417.pdf)<br>
