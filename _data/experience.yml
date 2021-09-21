@@ -7,6 +7,16 @@
   quote: >
    Bold ideas, breakthrough outcomes.
   description: | # this will include new lines to allow paragraphs
+    Train and lead junior team members in methods and assist senior client stakeholders in developing next generation enterprise data strategy for Federal Department.
+    Research, prototype, and deploy production-grade novel data solutions in client data systems utilizing CDC frameworks and messaging technologies to include Debezium and Apache Kafka.
+    Develop ad hoc enhancements to ETL pipelines to satisfy changing client needs. Develop infrastructure right-sizing and cost estimates for large de novo AWS deployments
+    (70+ node configuration deployments) for major client initiatives. Act as a company thought leader in cloud technologies by developing and presenting a workshop on deploying R Shiny Server dashboards with AWS to a large workshop with >200 attendees.
+
+    Operate as a member of an integrated data engineering team to execute a large-scale data and data processes migration from a client legacy data system
+    to a modern cloud-hybrid solution using: Azure, Azure Data Factory, Python, Pandas, SQL, SSMS and various other big data and informatic frameworks.
+    Develop frameworks to synthesize information from client datasets regarding human capital over the breadth of the organization hiring and retention streams.
+    Work closely with teammates in an Agile environment utilizing TFS to research, prototype, and quickly implement best practices in virtualization, automation, and data aggregation.
+
     Member of FedScoop 50 2018, 2019, Fed 100 2020 Award winning team of data science, engineering, and visualization specialists. Design, develop, implement, and augment USDA data reporting and analytics.
     Utilize Boto, Spark, PySpark, Python, Pandas, Numpy, SciPy, geoPandas, Fiona, GDAL, Hive, Hadoop, Impala, SQL, Sqoop, Tableau, and various other big data, informatic, GIS,
     and software engineering frameworks to optimize high throughput data analytics for critical infrastructure and monitoring regimens for SES and functional group federal clients.
